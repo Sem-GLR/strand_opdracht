@@ -7,17 +7,30 @@
 
 <script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
 
+</head>
+<body>
+
+<audio id="myAudio">
+  <source src="audio/click.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <script>
 
 // zon effect 
-    let click_sun = 1 ;
+  let click_sun = 1 ;
+
+  var x = document.getElementById("myAudio");
 
    AFRAME.registerComponent("click-button", {
         init: function() {
           this.myFunction = function() {
 
-            console.log("click")
+            // play audio 
+            x.play();
+            
+
+            // console.log("click")
             var sky = document.querySelector('#sky');
             var light = document.querySelector('#ambient');
 
@@ -26,13 +39,13 @@
                 sky.setAttribute('color', '#00004B')
                 light.setAttribute('light', 'type:ambient; intensity:0.2')
 
-                console.log(click_sun + " dark");
+                // console.log(click_sun + " dark");
             } else {
                 click_sun--
                 sky.setAttribute('color', '#ABF7F7')
                 light.setAttribute('light', 'type:ambient; intensity:2.5')
 
-                console.log(click_sun + " light");
+                // console.log(click_sun + " light");
             }
    
           };
@@ -44,14 +57,13 @@
           this.el.removeEventListener("click", this.myFunction);
         }
       });
-
     //   hover effect 
 
       AFRAME.registerComponent("hover_wheel", {
         init: function() {
           this.myFunction = function() {
 
-            console.log("hover");
+            // console.log("hover");
             var wheel = document.querySelector('#wheel');
 
             wheel.setAttribute('animation', 'property: rotation; to: 0 0 360; loop: true; dur: 30000; easing: linear')
@@ -70,7 +82,7 @@
         init: function() {
           this.myFunction = function() {
 
-            console.log("exit");
+            // console.log("exit");
             var wheel = document.querySelector('#wheel');
 
             wheel.setAttribute('animation', 'property: rotation; to: 0 0 360; loop: true; dur: 5000; easing: linear')
@@ -84,11 +96,7 @@
           this.el.removeEventListener("mouseleave", this.myFunction);
         }
       });
-    
 </script>
-
-</head>
-<body>
 
 <a-scene>
     <a-camera>
