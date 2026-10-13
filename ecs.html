@@ -6,16 +6,110 @@
     <title>Document</title>
 
 <script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+
+
+<script>
+
+// zon effect 
+    let click_sun = 1 ;
+
+   AFRAME.registerComponent("click-button", {
+        init: function() {
+          this.myFunction = function() {
+
+            console.log("click")
+            var sky = document.querySelector('#sky');
+            var light = document.querySelector('#ambient');
+
+            if (click_sun === 1){
+                click_sun++
+                sky.setAttribute('color', '#00004B')
+                light.setAttribute('light', 'type:ambient; intensity:0.2')
+
+                console.log(click_sun + " dark");
+            } else {
+                click_sun--
+                sky.setAttribute('color', '#ABF7F7')
+                light.setAttribute('light', 'type:ambient; intensity:2.5')
+
+                console.log(click_sun + " light");
+            }
+   
+          };
+
+          this.el.addEventListener("click", this.myFunction);
+        },
+
+        remove: function() {
+          this.el.removeEventListener("click", this.myFunction);
+        }
+      });
+
+    //   hover effect 
+
+      AFRAME.registerComponent("hover_wheel", {
+        init: function() {
+          this.myFunction = function() {
+
+            console.log("hover");
+            var wheel = document.querySelector('#wheel');
+
+            wheel.setAttribute('animation', 'property: rotation; to: 0 0 360; loop: true; dur: 30000; easing: linear')
+   
+          };
+
+          this.el.addEventListener("mouseenter", this.myFunction);
+        },
+
+        remove: function() {
+          this.el.removeEventListener("mouseenter", this.myFunction);
+        }
+      });
+
+      AFRAME.registerComponent("hover_wheel_exit", {
+        init: function() {
+          this.myFunction = function() {
+
+            console.log("exit");
+            var wheel = document.querySelector('#wheel');
+
+            wheel.setAttribute('animation', 'property: rotation; to: 0 0 360; loop: true; dur: 5000; easing: linear')
+   
+          };
+
+          this.el.addEventListener("mouseleave", this.myFunction);
+        },
+
+        remove: function() {
+          this.el.removeEventListener("mouseleave", this.myFunction);
+        }
+      });
+    
+</script>
+
 </head>
 <body>
-    <a-scene cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .raycastable" >
+
+<a-scene>
+    <a-camera>
+        <a-cursor></a-cursor>
+      </a-camera>
+
+    <a-assets>
+        <a-asset-item id="schip" src="models/kenney_pirate-kit/Models/GLB_format/ship-ghost.glb">
+        </a-asset-item>
+    </a-assets>
+
+        <a-entity id="ambient" light="type:ambient; intensity:2.5"></a-entity>
+        <a-entity position="0 5 0" light="type: point; intensity: 5"></a-entity>
+
         <a-sphere scale="1 0.1 0.5" position=" 0 0 0" radius="4" color="#EBE381"></a-sphere>
         <a-sphere scale="1 0.2 0.5" position=" 0 0 0" radius="3" color="#EBE381"></a-sphere>
-        <a-sphere shadow="receive: false" position=" 100 100 -100" radius="15" color="#FFF000" zon></a-sphere>
-        <a-plane roughness="0" position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="#0E95ED"></a-plane>
+        <a-sphere position=" 100 100 -100" radius="15" color="#FFF000"></a-sphere>
+        <a-plane shadow="cast: true; receive: true" roughness="0" position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="#0E95ED"></a-plane>
 
 
-    <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
+    <a-entity shadow="cast:true; receive=true" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
         <a-box position="8.01 0.30 0" height="1" width="1" color="" rotation=" 45 0 0" src="textures/wood_light.jpg"></a-box>
         <a-box position="8 0.5 0.5" height="1" width="1" color="" rotation=" 0 0 0" src="textures/wood_light.jpg"></a-box>
         <a-box position="8.01 0.30 1" height="1" width="1" color="" rotation=" 45 0 0" src="textures/wood_light.jpg"></a-box>
@@ -24,7 +118,45 @@
         <a-triangle position="8 3 0.5" rotation="0 -90 0" scale="4 2 4" src="textures/wool.png"></a-triangle>
     </a-entity>
 
-        <a-sky color="#ABF7F7"></a-sky>
+    <!-- night button  -->
+    <a-box  scale="2 1 2 2" position="0 0 5"></a-box>
+    <a-sphere click-button radius="0.8" position="0 0.5 5" color="#FF0000"></a-sphere>
+
+    <!-- spinning select tab  -->
+     
+    <a-sphere id="wheel" radius="1.2" position="0 10 -15" animation="property: rotation; to: 0 0 360; loop: true; dur: 5000; easing: linear" hover_wheel hover_wheel_exit>
+        <a-entity>
+            <a-plane rotation="0 0 0" position="0 2.5 0" width="1" height="2"></a-plane>
+            <a-plane rotation="0 0 180" position="0 -2.5 0" width="1" height="2"></a-plane>
+        </a-entity>
+
+        <a-entity rotation="0 0 45">
+            <a-plane rotation="0 0 0" position="0 2.5 0" width="1" height="2"></a-plane>
+            <a-plane rotation="0 0 180" position="0 -2.5 0" width="1" height="2"></a-plane>
+        </a-entity>
+
+        <a-entity rotation="0 0 90">
+            <a-plane rotation="0 0 0" position="0 2.5 0" width="1" height="2"></a-plane>
+            <a-plane rotation="0 0 180" position="0 -2.5 0" width="1" height="2"></a-plane>
+        </a-entity>
+
+        <a-entity rotation="0 0 135">
+            <a-plane rotation="0 0 0" position="0 2.5 0" width="1" height="2"></a-plane>
+            <a-plane rotation="0 0 180" position="0 -2.5 0" width="1" height="2"></a-plane>
+        </a-entity>
+        
+    </a-sphere>
+
+    <!-- 3d models -->
+
+    <a-entity
+    animation="property: position; to: 40 10 -15; dur: 2000; dir: alternate ; easing: linear; loop: true;"
+    gltf-model="#schip"
+    position="40 5 -15"
+    scale="2 2 2"
+    ></a-entity>
+    <!-- sky -->
+    <a-sky id="sky" color="#ABF7F7"></a-sky>
     </a-scene> 
 </body>
 </html>
